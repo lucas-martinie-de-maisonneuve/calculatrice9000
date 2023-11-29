@@ -1,3 +1,15 @@
+historique_calcul = []
+historique_resultat = []
+print ("""
+            Entrez 'historique' pour afficher l'historique
+            Entrez 'stop' pour quitter
+
+            Opérateurs disponibles : +   -   /   *
+            Au format 2 + 3 * 2 / 4
+       
+            """)
+                
+
 def est_nombre(terme):
     try:
         float(terme)
@@ -31,7 +43,6 @@ def evaluer(expression):
     for terme in expression:
         if est_nombre(terme):
             nombres.append(float(terme))
-
         elif terme in priorites:
             while operateurs and priorites[terme] <= priorites[operateurs[-1]]:
                 operateur = operateurs.pop()
@@ -45,8 +56,9 @@ def evaluer(expression):
                     nombres.append(multiplication(a, b))
                 elif operateur == '/':
                     nombres.append(division(a, b))
-            
             operateurs.append(terme)
+        else:
+            raise ValueError(f"Opérateur non pris en charge : {terme}")
 
     while operateurs:
         operateur = operateurs.pop()
@@ -67,18 +79,35 @@ def evaluer(expression):
         elif operateur == '/':
             nombres.append(division(a, b))
 
-    return nombres[0]
+    if len(nombres) == 1:
+        return nombres[0]
+    else:
+        raise ValueError("Expression mathématique invalide. Vérifiez le format.")
 
-expression = input("""
-                   
-            Veuillez entrer une expression mathématique
-            (ex: 2 + 3 * 2 / 4) 
+while True:
+    expression = input("""
+        
+    Veuillez entrer une expression mathématique ci-dessous
             
-            Opérateur disponible:
-            +   -   /   *
-                   
-            """)
-termes = expression.split()
+    """)
+    historique_calcul.append(expression)
 
-resultat = evaluer(termes)
-print("Résultat :", resultat)
+    if expression.lower() == 'stop':
+        break
+    elif expression.lower() == 'historique':
+        if historique_calcul and historique_resultat:
+            print("Historique des résultats:")
+            for i, (calcul, resultat) in enumerate(zip(historique_calcul, historique_resultat), 1):
+                print(f"""
+{i}. {calcul} = {resultat}""")
+        else:
+            print("L'historique est vide.")
+    else:
+        termes = expression.split()
+
+        try:
+            resultat = evaluer(termes)
+            print(f"Le résultat de {expression} est {resultat}")
+            historique_resultat.append(resultat)
+        except ValueError as e:
+            print(f"Erreur : {str(e)}. Veuillez réessayer.")
