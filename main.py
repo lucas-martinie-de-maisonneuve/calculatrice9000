@@ -1,14 +1,9 @@
 historique_calcul = []
 historique_resultat = []
-print ("""
-            Entrez 'historique' pour afficher l'historique
-            Entrez 'stop' pour quitter
 
-            Opérateurs disponibles : +   -   /   *
-            Au format 2 + 3 * 2 / 4
-       
-            """)
-                
+print("""
+                Opérateurs disponibles : +   -   /   *
+                Au format 2 + 3 * 2 / 4""")
 
 def est_nombre(terme):
     try:
@@ -70,6 +65,7 @@ def evaluer(expression):
             a = nombres.pop()
         else:
             raise ValueError("Expression mathématique invalide. Vérifiez le format.")
+        
         if operateur == '+':
             nombres.append(addition(a, b))
         elif operateur == '-':
@@ -86,28 +82,34 @@ def evaluer(expression):
 
 while True:
     expression = input("""
-        
-    Veuillez entrer une expression mathématique ci-dessous
-            
-    """)
+    |-----------------------------------------------------------|
+    |        'his' pour historique / 'del' pour l'effacer       |
+    |    Veuillez entrer une expression mathématique ci-dessous |
+    |-----------------------------------------------------------|
+                       
+        ===> """)
     historique_calcul.append(expression)
 
-    if expression.lower() == 'stop':
-        break
-    elif expression.lower() == 'historique':
+    if expression.lower() == 'his':
         if historique_calcul and historique_resultat:
-            print("Historique des résultats:")
+            print("""
+                    Historique des résultats:""")
             for i, (calcul, resultat) in enumerate(zip(historique_calcul, historique_resultat), 1):
                 print(f"""
-{i}. {calcul} = {resultat}""")
+
+                {i}. {calcul} = {resultat}""")
         else:
-            print("L'historique est vide.")
+            print("""
+                    L'historique est vide.""")
+    elif expression.lower() == 'del':
+        historique_calcul = []
+        historique_resultat = []
+        print("""
+                    Historique effacé.""")
     else:
         termes = expression.split()
 
-        try:
-            resultat = evaluer(termes)
-            print(f"Le résultat de {expression} est {resultat}")
-            historique_resultat.append(resultat)
-        except ValueError as e:
-            print(f"Erreur : {str(e)}. Veuillez réessayer.")
+        resultat = evaluer(termes)
+        historique_resultat.append(resultat)
+        print(f"""
+                    {expression} = {resultat}""")
