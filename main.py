@@ -12,7 +12,6 @@ def est_nombre(terme):
     except ValueError:
         return False
 
-# Fonctions pour les opérations
 def addition(a, b):
     return a + b
 
@@ -28,7 +27,6 @@ def division(a, b):
     else:
         raise ValueError("Division par zéro impossible.")
 
-# Priorités des opérations (La priorité sera plus forte sur les opérateurs définis à 2)
 priorites = {'+': 1, '-': 1, '*': 2, '/': 2}
 
 def evaluer(expression):
@@ -107,9 +105,15 @@ while True:
         print("""
                     Historique effacé.""")
     else:
-        termes = expression.split()
-
-        resultat = evaluer(termes)
-        historique_resultat.append(resultat)
-        print(f"""
+        while True:
+            try:
+                termes = expression.split()
+                resultat = evaluer(termes)
+                historique_resultat.append(resultat)
+                print(f"""
                     {expression} = {resultat}""")
+                break
+            except ValueError as e:
+                print(f"Erreur : {str(e)}.")
+                expression = input("Veuillez entrer une nouvelle expression : ")
+                historique_calcul.append(expression)
