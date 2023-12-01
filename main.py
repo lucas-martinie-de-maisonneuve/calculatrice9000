@@ -115,5 +115,7 @@ while True:
                 break
             except ValueError as e:
                 print(f"Erreur : {str(e)}.")
-                expression = input("Veuillez entrer une nouvelle expression : ")
+                expression = input("""
+         
+        ===> """)
                 historique_calcul.append(expression)
